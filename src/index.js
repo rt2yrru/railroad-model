@@ -9,7 +9,13 @@ const hiResTime = () => performance.now();
 
 class InputController {}
 
-class GameObject {}
+class GameObject {
+  handleInput(game: Game, inputController: InputController) {}
+
+  update(game: Game, dt: number) {}
+
+  render(game: Game, remainder: number) {}
+}
 
 class Scene {
   _objects: GameObject[];
@@ -18,11 +24,17 @@ class Scene {
     this._objects = gameObjects;
   }
 
-  handleInput(inputController: InputController) {}
+  handleInput(game: Game, inputController: InputController) {
+    this._objects.forEach(gameObject => gameObject.handleInput(game, inputController));
+  }
 
-  update(dt: number) {}
+  update(game: Game, dt: number) {
+    this._objects.forEach(gameObject => gameObject.update(game, dt));
+  }
 
-  render(remainder: number) {}
+  render(game: Game, remainder: number) {
+    this._objects.forEach(gameObject => gameObject.render(game, remainder));
+  }
 }
 
 /**
@@ -45,9 +57,9 @@ class Game {
   /**
    * @param {Scene[]} scenes Game scenes collection
    * @param {InputController} inputController InputController instance for game loop process input step
-   * @param {number} dt Constant delta step for game loop update step
+   * @param {number} fps Frames per second
    */
-  constructor(scenes: Scene[], inputController: InputController, dt: number = 1000 / 30) {
+  constructor(scenes: Scene[], inputController: InputController, fps: number = 30) {
     if (scenes.length === 0) {
       throw new Error('At least one Scene should be provided');
     }
@@ -57,7 +69,7 @@ class Game {
     this._activeScene = 0;
     this._running = false;
 
-    this._dt = dt;
+    this._dt = 1000 / fps;
     this._reset();
   }
 
@@ -150,6 +162,8 @@ class Game {
    * 3) Render Scene
    */
   _update() {
+    if (!this._running) return;
+
     const scene = this.getActive();
 
     this._current = hiResTime();
@@ -159,25 +173,52 @@ class Game {
     // Add remainder of time form previous frame
     this._lag += this._elapsed;
 
-    scene.handleInput(this._inputController);
+    scene.handleInput(this, this._inputController);
 
     // Run scene update (n = _lag % _dt) times;
     while (this._lag >= this._dt) {
-      scene.update(this._dt);
+      scene.update(this, this._dt);
       this._lag -= this._dt;
     }
 
     // Render scene
-    scene.render(this._lag / this._dt);
-    // Waint for another frame
-    if (this._running) {
-      requestAnimationFrame(() => this._update());
-    }
+    scene.render(this, this._lag / this._dt);
+    // Wait for another frame
+    requestAnimationFrame(() => this._update());
   }
 }
 
-const scene = new Scene([]);
+class Logger extends GameObject {
+  _updateCalls = 0;
+  _renderCalls = 0;
+
+  update() {
+    this._updateCalls++;
+  }
+
+  render() {
+    this._renderCalls++;
+  }
+
+  log(duration) {
+    console.warn(`
+      Logger::update was called ${this._updateCalls} times; ${this._updateCalls / duration} FPS;
+      Logger::render was called ${this._renderCalls} times; ${this._renderCalls / duration} FPS;
+    `);
+  }
+}
+
+const logger = new Logger();
+
+const scene = new Scene([logger]);
 const inputController = new InputController();
-const game = new Game([scene], inputController);
+const game = new Game([scene], inputController, 30);
+
+const DURATION = 10;
 
 game.start();
+
+setTimeout(() => {
+  game.stop();
+  logger.log(DURATION);
+}, 1000 * DURATION);
