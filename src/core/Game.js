@@ -1,50 +1,8 @@
 // @flow
-import { hiResTime } from './utils';
+import { hiResTime } from '../utils';
 
-export interface IInputManager {}
-
-export interface IRenderingContext {}
-
-export interface IScene {
-  +_objects: IGameObject[];
-  +_renderingContext: IRenderingContext;
-  handleInput(inputManager: IInputManager): void;
-  update(dt: number): void;
-  render(remainder: number): void;
-  getRenderingContext(): IRenderingContext;
-}
-
-export interface IGameObject {
-  handleInput(scene: IScene, inputManager: IInputManager): void;
-  update(scene: IScene, dt: number): void;
-  render(scene: IScene, remainder: number): void;
-}
-
-export class Scene implements IScene {
-  _objects: IGameObject[];
-  _renderingContext: IRenderingContext;
-
-  constructor(gameObjects: IGameObject[], renderingContext: IRenderingContext) {
-    this._objects = gameObjects;
-    this._renderingContext = renderingContext;
-  }
-
-  handleInput(inputManager: IInputManager) {
-    this._objects.forEach(gameObject => gameObject.handleInput(this, inputManager));
-  }
-
-  update(dt: number) {
-    this._objects.forEach(gameObject => gameObject.update(this, dt));
-  }
-
-  render(remainder: number) {
-    this._objects.forEach(gameObject => gameObject.render(this, remainder));
-  }
-
-  getRenderingContext() {
-    return this._renderingContext;
-  }
-}
+import { IScene } from './Scene';
+import { IInputManager } from './InputManager';
 
 /**
  * Main Game class. Controls game loop and scene processing

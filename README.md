@@ -15,4 +15,4 @@
 
 - PhysicsComponent contains object updating behavior
 
-- GraphicsComponent contains object graphics information
+- GraphicsComponent contains object graphics information and responsible for rendering
