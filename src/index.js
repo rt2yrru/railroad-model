@@ -9,11 +9,15 @@ const hiResTime = () => performance.now();
 
 interface IInputManager {}
 
+interface IRenderingContext {}
+
 interface IScene {
   +_objects: IGameObject[];
+  +_renderingContext: IRenderingContext;
   handleInput(inputManager: IInputManager): void;
   update(dt: number): void;
   render(remainder: number): void;
+  getRenderingContext(): IRenderingContext;
 }
 
 interface IGameObject {
@@ -24,9 +28,11 @@ interface IGameObject {
 
 class Scene implements IScene {
   _objects: IGameObject[];
+  _renderingContext: IRenderingContext;
 
-  constructor(gameObjects: IGameObject[]) {
+  constructor(gameObjects: IGameObject[], renderingContext: IRenderingContext) {
     this._objects = gameObjects;
+    this._renderingContext = renderingContext;
   }
 
   handleInput(inputManager: IInputManager) {
@@ -39,6 +45,10 @@ class Scene implements IScene {
 
   render(remainder: number) {
     this._objects.forEach(gameObject => gameObject.render(this, remainder));
+  }
+
+  getRenderingContext() {
+    return this._renderingContext;
   }
 }
 
