@@ -29,6 +29,10 @@ export class Canvas implements IRenderingContext {
     }
 
     this._canvas = canvas;
+    this._canvas.width = width;
+    this._canvas.height = height;
+    this._canvas.style.width = width + 'px';
+    this._canvas.style.height = height + 'px';
 
     const context = canvas.getContext('2d');
 

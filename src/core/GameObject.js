@@ -26,6 +26,14 @@ export interface IGameObject {
   getTransition(): ITransitionComponent;
 }
 
+type GameObjectParams = {
+  state: ?IStateComponent,
+  input: ?IInputComponent,
+  physics: ?IPhysicsComponent,
+  graphics: ?IGraphicsComponent,
+  transition: ITransitionComponent,
+};
+
 export class GameObject implements IGameObject {
   _state: ?IStateComponent;
   _input: ?IInputComponent;
@@ -33,13 +41,7 @@ export class GameObject implements IGameObject {
   _graphics: ?IGraphicsComponent;
   _transition: ITransitionComponent;
 
-  constructor(
-    state: ?IStateComponent = null,
-    input: ?IInputComponent = null,
-    physics: ?IPhysicsComponent = null,
-    graphics: ?IGraphicsComponent = null,
-    transition: ITransitionComponent
-  ) {
+  constructor({ state, input, physics, graphics, transition }: GameObjectParams) {
     this._state = state;
     this._input = input;
     this._physics = physics;
