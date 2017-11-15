@@ -2,14 +2,11 @@
 import { hiResTime } from '../utils';
 
 import { IScene } from './Scene';
-import { IInputManager } from './InputManager';
 
 /**
  * Main Game class. Controls game loop and scene processing
  */
 export class Game {
-  _inputManager: IInputManager;
-
   _scenes: IScene[];
   _activeIScene: number;
 
@@ -23,16 +20,14 @@ export class Game {
 
   /**
    * @param {IScene[]} scenes Game scenes collection
-   * @param {IInputManager} inputManager IInputManager instance for game loop process input step
    * @param {number} fps Frames per second
    */
-  constructor(scenes: IScene[], inputManager: IInputManager, fps: number = 30) {
+  constructor(scenes: IScene[], fps: number = 30) {
     if (scenes.length === 0) {
       throw new Error('At least one IScene should be provided');
     }
 
     this._scenes = scenes;
-    this._inputManager = inputManager;
     this._activeIScene = 0;
     this._running = false;
 
@@ -96,7 +91,7 @@ export class Game {
     // Add remainder of time form previous frame
     this._lag += this._elapsed;
 
-    scene.handleInput(this._inputManager);
+    scene.handleInput();
 
     // Run scene update (n = _lag % _dt) times;
     while (this._lag >= this._dt) {

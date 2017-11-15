@@ -3,7 +3,6 @@ import { type Point } from '../utils';
 
 import { IScene } from './Scene';
 import { IGameObject } from './GameObject';
-import { IInputManager } from './InputManager';
 import { IRenderingContext } from './RenderingContext';
 
 export interface IStateComponent {
@@ -81,7 +80,7 @@ export class TransitionComponent implements ITransitionComponent {
 }
 
 export interface IInputComponent {
-  update(object: IGameObject, scene: IScene, inputManager: IInputManager): void;
+  update(object: IGameObject, scene: IScene): void;
 }
 
 export interface IPhysicsComponent {

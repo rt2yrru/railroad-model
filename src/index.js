@@ -4,8 +4,8 @@ import './index.css';
 
 import grassTile from './assets/grass_16x16.png';
 
-import { Game, GameObject, Scene, Canvas, InputManager, TransitionComponent, Sprite } from './core';
-import { SpriteGraphicsComponent } from './components';
+import { Game, GameObject, Scene, Canvas, TransitionComponent, Sprite } from './core';
+import { SpriteGraphicsComponent, MovementPhysicsComponent } from './components';
 
 const renderingContext = new Canvas('canvas', 320, 240);
 
@@ -33,8 +33,14 @@ const object4 = new GameObject({
   graphics: grassGraphics,
 });
 
-const scene = new Scene([object1, object2, object3, object4], renderingContext);
+const object5 = new GameObject({
+  transition: new TransitionComponent({ x: 0, y: 64 }, void 0, { x: 2, y: 0 }),
+  physics: new MovementPhysicsComponent(),
+  graphics: grassGraphics,
+});
 
-const game = new Game([scene], new InputManager());
+const scene = new Scene([object1, object2, object3, object4, object5], renderingContext);
+
+const game = new Game([scene]);
 
 game.start();

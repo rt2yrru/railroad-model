@@ -1,7 +1,6 @@
 // @flow
 
 import { IScene } from './Scene';
-import { IInputManager } from './InputManager';
 
 import {
   IStateComponent,
@@ -18,7 +17,7 @@ export interface IGameObject {
   +_graphics: ?IGraphicsComponent;
   +_transition: ITransitionComponent;
 
-  handleInput(scene: IScene, inputManager: IInputManager): void;
+  handleInput(scene: IScene): void;
   update(scene: IScene, dt: number): void;
   render(scene: IScene, remainder: number): void;
 
@@ -57,9 +56,9 @@ export class GameObject implements IGameObject {
     return this._transition;
   }
 
-  handleInput(scene: IScene, inputManager: IInputManager): void {
+  handleInput(scene: IScene): void {
     if (this._input != null) {
-      this._input.update(this, scene, inputManager);
+      this._input.update(this, scene);
     }
   }
 
