@@ -1,8 +1,29 @@
 // @flow
-import { IGraphicsComponent } from '../core/Component';
+import { IGraphicsComponent, IPhysicsComponent } from '../core/Component';
 import { ISprite } from '../core/Sprite';
+import { IScene } from '../core/Scene';
 import { IGameObject } from '../core/GameObject';
 import { IRenderingContext } from '../core/RenderingContext';
+
+export class MovementPhysicsComponent implements IPhysicsComponent {
+  update(object: IGameObject, scene: IScene, dt: number) {
+    const objectTransition = object.getTransition()
+
+    const { x: posX, y: posY } = objectTransition.getPosition();
+    const { x: velX, y: velY } = objectTransition.getVelocity();
+
+    if (posX >= 304) {
+      objectTransition.setVelocity({ x: -2, y: -1 });
+    } else if (posX <= 0) {
+      objectTransition.setVelocity({ x: 2, y: 1 });
+    }
+
+    objectTransition.setPosition({
+      x: posX + velX,
+      y: posY + velY,
+    });
+  }
+}
 
 export class SpriteGraphicsComponent implements IGraphicsComponent {
   _sprite: ISprite;
