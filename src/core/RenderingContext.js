@@ -6,6 +6,7 @@ export interface IRenderingContext {
   +_canvas: HTMLCanvasElement;
   +_context: CanvasRenderingContext2D;
   getContext(): CanvasRenderingContext2D;
+  clear(): void;
 }
 
 export class Canvas implements IRenderingContext {
@@ -45,5 +46,9 @@ export class Canvas implements IRenderingContext {
 
   getContext() {
     return this._context;
+  }
+
+  clear() {
+    this._context.clearRect(0, 0, this._width, this._height);
   }
 }
