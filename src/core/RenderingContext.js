@@ -9,7 +9,7 @@ export interface IRenderingContext {
   clear(): void;
 }
 
-export class Canvas implements IRenderingContext {
+export class CanvasContext2D implements IRenderingContext {
   _width: number;
   _height: number;
   _canvas: HTMLCanvasElement;

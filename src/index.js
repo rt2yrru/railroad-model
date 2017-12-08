@@ -4,10 +4,10 @@ import './index.css';
 
 import grassTile from './assets/grass_16x16.png';
 
-import { Game, GameObject, Scene, Canvas, TransitionComponent, Sprite } from './core';
+import { Game, GameObject, Scene, CanvasContext2D, TransitionComponent, Sprite } from './core';
 import { SpriteGraphicsComponent, MovementPhysicsComponent } from './components';
 
-const renderingContext = new Canvas('canvas', 320, 240);
+const renderingContext = new CanvasContext2D('canvas', 320, 240);
 
 const sprite = new Sprite(grassTile, 16, 16);
 

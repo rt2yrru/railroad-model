@@ -13,9 +13,9 @@ export class MovementPhysicsComponent implements IPhysicsComponent {
     const { x: velX, y: velY } = objectTransition.getVelocity();
 
     if (posX >= 304) {
-      objectTransition.setVelocity({ x: -2, y: -1 });
+      objectTransition.setVelocity({ x: -4, y: -2 });
     } else if (posX <= 0) {
-      objectTransition.setVelocity({ x: 2, y: 1 });
+      objectTransition.setVelocity({ x: 4, y: 2 });
     }
 
     objectTransition.setPosition({
