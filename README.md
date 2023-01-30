@@ -16,3 +16,11 @@
 - PhysicsComponent contains object updating behavior
 
 - GraphicsComponent contains object graphics information and responsible for rendering
+
+
+
+# version 0.1.1
+
+- simply having this repo as the original owner/developer has either deleted this repo or removed it
+- Keeping this repo as I have used this once a long time back and would try to keep it updated
+- Keeping it as a relic 
